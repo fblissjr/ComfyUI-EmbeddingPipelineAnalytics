@@ -1,4 +1,3 @@
-# core/data_store.py
 from typing import Dict, Any, Optional
 from pathlib import Path
 import json
@@ -10,19 +9,27 @@ import hashlib
 class PipelineDataCapture:
     """Captures and stores pipeline execution data."""
     
-    def __init__(self, base_path: str = "pipeline_analytics"):
-        self.base_path = Path(base_path)
+    def __init__(self, config_path: str = "config.json"):
+        self.config = self.load_config(config_path)
+
+        self.base_path = Path(self.config["data_base_path"])
         self.base_path.mkdir(parents=True, exist_ok=True)
         
-        # Create subdirectories
-        self.embeddings_path = self.base_path / "embeddings"
-        self.metadata_path = self.base_path / "metadata"
-        self.outputs_path = self.base_path / "outputs"
-        self.analytics_path = self.base_path / "analytics"
+        # Create subfolders using config values
+        self.embeddings_path = self.base_path / self.config["embeddings_path"]
+        self.metadata_path = self.base_path / self.config["metadata_path"]
+        self.outputs_path = self.base_path / self.config["outputs_path"]
+        self.analytics_path = self.base_path / self.config["analytics_path"]
         
         for path in [self.embeddings_path, self.metadata_path, 
                     self.outputs_path, self.analytics_path]:
             path.mkdir(exist_ok=True)
+
+    def load_config(self, config_path: str) -> Dict[str, Any]:
+        """Load configuration from JSON file."""
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        return config
 
     def generate_run_id(self, metadata: Dict) -> str:
         """Generate unique run ID based on timestamp and input hash."""

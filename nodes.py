@@ -20,7 +20,8 @@ class EmbeddingPipelineCapture:
                 "data": ("*",),  # Accept any input type
                 "run_id": ("STRING", {"default": ""}),  # Optional - will generate if empty
                 "stage_name": ("STRING", {}),
-                "metadata": ("STRING", {"multiline": True, "default": "{}"})
+                "metadata": ("STRING", {"multiline": True, "default": "{}"}),
+                "config_path": ("STRING", {"default": "config.json"}) # Add config path here
             }
         }
     
@@ -30,9 +31,12 @@ class EmbeddingPipelineCapture:
     CATEGORY = "EmbeddingAnalytics"
     
     def __init__(self):
-        self.data_store = HunyuanPipelineCapture()  # We can make this configurable later
+        # self.data_store = HunyuanPipelineCapture()  # We can make this configurable later
+        # Initialize with config path
+        self.config_path = "config.json"
+        self.data_store = HunyuanPipelineCapture(config_path=self.config_path)
         
-    def capture(self, data: Any, run_id: str, stage_name: str, metadata: str) -> tuple:
+    def capture(self, data: Any, run_id: str, stage_name: str, metadata: str, config_path: str) -> tuple:
         try:
             metadata_dict = json.loads(metadata)
         except:
@@ -67,6 +71,7 @@ class EmbeddingAnalyzer:
             "required": {
                 "run_id": ("STRING", {}),
                 "analysis_type": (["umap", "pca", "tsne", "statistics"], {}),
+                "config_path": ("STRING", {"default": "config.json"})
             },
             "optional": {
                 "compare_run_id": ("STRING", {"default": ""}),
@@ -80,9 +85,13 @@ class EmbeddingAnalyzer:
     CATEGORY = "EmbeddingAnalytics"
     
     def __init__(self):
-        self.data_store = HunyuanPipelineCapture()
+        # self.data_store = HunyuanPipelineCapture()
+        # Initialize with config path
+        self.config_path = "config.json"
+        self.data_store = HunyuanPipelineCapture(config_path=self.config_path)
+
     
-    def analyze(self, run_id: str, analysis_type: str, 
+    def analyze(self, run_id: str, analysis_type: str, config_path: str,
                 compare_run_id: str = "", output_path: str = "embedding_analysis") -> tuple:
         # Load run data
         run_data = self.data_store.data_store.load_run(run_id)

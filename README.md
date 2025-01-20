@@ -14,17 +14,28 @@ this repo is to capture end-to-end data, metadata, and embeddings for ComfyUI wo
 
 as this will be maintained based on my own free time, the core will focus on the following:
 
-*Generic capture node that can:*
+*pipeline capture node that can:*
 
-- Capture embeddings and run metadata and data inputs / outputs from ComfyUI workflows (parameters, prompt, guidance, sampling, etc)
-- Store data in a structured format for analysis (parquet, jsonl)
+- capture embeddings and run metadata and data inputs / outputs from ComfyUI workflows (parameters, prompt, guidance, sampling, etc)
+- store data in a structured format for analysis (parquet, jsonl)
+- all inside comfyui
 
-*Analysis node that can:*
+*analysis node that can:*
 
-- Analyze embeddings using different techniques
-- Compare runs
-- Generate visualizations (UMAP, etc)
-- Produce structured reports
+- analyze embeddings using different techniques
+- provide insights into impact of different prompts (or lora finetuning captions) on end results (ie: for a given target generation, what captions need to be added, left out, expanded upon, reordered, reworded, restructured, etc)
+- compare runs
+- generate visualizations (UMAP, etc)
+- produce structured reports
+- all inside comfyui
+
+## future / plans
+
+- 'so what?' analysis / interpretation by enabling hooks into LLMs for analysis - fantastic way for those unfamiliar with working with embeddings to interpret and explore\
+- integration with embedded SQL database, likely duckdb
+- more intuitive comfyui nodes (first time building one, so learning as i go)
+- avoiding overlap with other similar projects (ie: logging, observability) - this is primarily for embeddings analysis and capturing data (inputs/outputs/metadata) from comfyui pipelines in a structured way
+- feedback from community for real use cases
 
 ## project code tree
 

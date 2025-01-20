@@ -1,0 +1,7 @@
+{
+    "data_path": "data",
+    "embeddings_path": "embeddings",
+    "metadata_path": "metadata",
+    "outputs_path": "outputs",
+    "analytics_path": "analytics"
+  }
