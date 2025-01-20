@@ -2,7 +2,13 @@ import json
 import torch
 from typing import Dict, Any, Optional
 
-from .core.pipeline_types.hunyuan import HunyuanPipelineCapture
+# analysis imports
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+import umap
+    
+from .core.pipeline_types.hunyuanvideo import HunyuanPipelineCapture
 
 class EmbeddingPipelineCapture:
     """Base node for capturing pipeline data at any point."""
@@ -207,6 +213,6 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "EmbeddingPipelineCapture": "Embedding Pipeline Capture",
+    "Hunyuan": "Embedding Pipeline Capture",
     "EmbeddingAnalyzer": "Embedding Analyzer"
 }

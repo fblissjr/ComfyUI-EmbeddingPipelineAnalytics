@@ -1,18 +1,18 @@
 # ComfyUI-EmbeddingPipelineAnalytics
 
-## Overview
+## overview
 
-This repo is to capture end-to-end data, metadata, and embeddings for ComfyUI workflows, specifically HunyuanVideo to start.
+this repo is to capture end-to-end data, metadata, and embeddings for ComfyUI workflows, specifically HunyuanVideo to start.
 
-## Goals
+## goals
 
-- Creating more formalized datasets for open source projects and teams, for downstream finetuning or analysis
-- Giving more powerful analysis tools and data management tooling to non-developers in the community
-- Providing a feedback mechanism for analyzing embeddings vs. inputs
+- creating more formalized datasets for open source projects and teams for analysis and/or downstream tasks, of which there are infinite experiments to explore
+- giving more powerful analysis tools and data management tooling to non-developers in the community
+- providing a feedback mechanism for analyzing embeddings vs. inputs
 
-## Features
+## features
 
-As this will be maintained based on my own free time, the core will focus on the following:
+as this will be maintained based on my own free time, the core will focus on the following:
 
 *Generic capture node that can:*
 
@@ -26,19 +26,28 @@ As this will be maintained based on my own free time, the core will focus on the
 - Generate visualizations (UMAP, etc)
 - Produce structured reports
 
-## Tree
+## project code tree
 
 ```
 ComfyUI-EmbeddingPipelineAnalytics/
+├── core
+│   ├── analyzers.py
+│   ├── data_store.py
+│   ├── __init__.py
+│   └── pipeline_types
+│       ├── base.py
+│       ├── hunyuanvideo.py
+│       ├── __init__.py
+│       └── __pycache__
+├── example_workflows
+│   └── example_workflow.json
 ├── __init__.py
-├── nodes.py              
-├── core/
-│   ├── __init__.py
-│   ├── data_store.py     # core data storage/management
-│   ├── analyzers.py      # analysis implementations
-│   └── pipeline_types/   # pipeline-specific implementations
-│       ├── __init__.py
-│       ├── base.py       
-│       └── hunyuan.py    # hunyuanvideo-specific code
-└── requirements.txt
+├── LICENSE
+├── nodes.py
+├── README.md
+├── requirements.txt
+└── tests
+    ├── conftest.py
+    ├── test_hunyuanvideo.py
+    └── test_workflow.py
 ```
