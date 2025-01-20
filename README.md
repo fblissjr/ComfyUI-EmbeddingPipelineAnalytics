@@ -25,3 +25,20 @@ As this will be maintained based on my own free time, the core will focus on the
 - Compare runs
 - Generate visualizations (UMAP, etc)
 - Produce structured reports
+
+## Tree
+
+```
+ComfyUI-EmbeddingPipelineAnalytics/
+├── __init__.py
+├── nodes.py              
+├── core/
+│   ├── __init__.py
+│   ├── data_store.py     # core data storage/management
+│   ├── analyzers.py      # analysis implementations
+│   └── pipeline_types/   # pipeline-specific implementations
+│       ├── __init__.py
+│       ├── base.py       
+│       └── hunyuan.py    # hunyuanvideo-specific code
+└── requirements.txt
+```
