@@ -6,8 +6,8 @@ import torch
 class HunyuanPipelineCapture:
     """Specialized capture for HunyuanVideo pipeline."""
     
-    def __init__(self):
-        self.data_store = PipelineDataCapture("hunyuan_analytics")
+    def __init__(self, analytics_dir: str = "hunyuan_analytics"):
+        self.data_store = PipelineDataCapture(analytics_dir)
         
     def capture_text_encode(self,
                           hyvid_embeds: Dict[str, torch.Tensor],
