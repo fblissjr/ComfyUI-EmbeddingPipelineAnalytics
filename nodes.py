@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import umap
+import os
     
 from .core.pipeline_types.hunyuanvideo import HunyuanPipelineCapture
 
@@ -17,49 +18,59 @@ class EmbeddingPipelineCapture:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "data": ("*",),  # Accept any input type
-                "run_id": ("STRING", {"default": ""}),  # Optional - will generate if empty
+                "data": ("HYVIDEMBEDS",),  # <---- SPECIFIC TYPE: HYVIDEMBEDS
+                "run_id": ("STRING", {"default": ""}),
                 "stage_name": ("STRING", {}),
                 "metadata": ("STRING", {"multiline": True, "default": "{}"}),
-                "config_path": ("STRING", {"default": "config.json"}) # Add config path here
+                "config_path": ("STRING", {"default": "config.json"})
             }
         }
     
-    RETURN_TYPES = ("*", "STRING")  # Pass through data + run_id
+    RETURN_TYPES = ("HYVIDEMBEDS", "STRING")
     RETURN_NAMES = ("data", "run_id")
     FUNCTION = "capture"
     CATEGORY = "EmbeddingAnalytics"
     
     def __init__(self):
-        # self.data_store = HunyuanPipelineCapture()  # We can make this configurable later
         # Initialize with config path
         self.config_path = "config.json"
-        self.data_store = HunyuanPipelineCapture(config_path=self.config_path)
+        script_directory = os.path.dirname(os.path.abspath(__file__)) # Get directory of nodes.py
+        config_path_absolute = os.path.join(script_directory, "config.json") # Construct absolute path
+        self.data_store = HunyuanPipelineCapture(config_path=config_path_absolute) # Use absolute path
+        self.config_path = config_path_absolute # Update self.config_path to absolute path (optional, for clarity)
         
     def capture(self, data: Any, run_id: str, stage_name: str, metadata: str, config_path: str) -> tuple:
         try:
             metadata_dict = json.loads(metadata)
         except:
             metadata_dict = {"raw": metadata}
-            
+
         metadata_dict["stage"] = stage_name
-            
+
         # Generate run_id if not provided
         if not run_id:
             run_id = self.data_store.data_store.generate_run_id(metadata_dict)
-            
+
         # Handle different types of data
         if isinstance(data, dict) and "samples" in data:  # LATENT
             self.data_store.data_store.save_outputs(run_id, {"latents": data["samples"]})
         elif isinstance(data, dict) and "prompt_embeds" in data:  # HYVIDEMBEDS
+            print(f"--- EmbeddingPipelineCapture Node (Stage: {stage_name}) ---") # Debug print START
+            print(f"Run ID: {run_id}")
+            print(f"Stage Name: {stage_name}")
+            print(f"Data Type: {type(data)}")
+            if isinstance(data, dict):
+                print(f"Data Keys: {data.keys()}")
+            # print(f"Data Content (first 100 chars): {str(data)[:100]}...")
+            print(f"--- EmbeddingPipelineCapture Node (Stage: {stage_name}) END ---") # Debug print END
             self.data_store.data_store.save_embeddings(run_id, data, stage_name)
         else:
             # Save as generic output
             self.data_store.data_store.save_outputs(run_id, {stage_name: data})
-            
+
         # Save/update metadata
         self.data_store.data_store.save_metadata(run_id, metadata_dict)
-        
+
         return (data, run_id)
 
 class EmbeddingAnalyzer:

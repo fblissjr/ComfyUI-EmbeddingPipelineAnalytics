@@ -1,5 +1,5 @@
 {
-    "data_path": "data",
+    "data_base_path": "data",
     "embeddings_path": "embeddings",
     "metadata_path": "metadata",
     "outputs_path": "outputs",
